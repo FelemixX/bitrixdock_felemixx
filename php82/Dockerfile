@@ -7,6 +7,7 @@ RUN apt-get update \
     php8.2-mbstring \
     php8.2-mysql \
     php8.2-intl \
+    php8.0-xdebug \
     php8.2-interbase \
     php8.2-redis \
     php8.2-soap \
