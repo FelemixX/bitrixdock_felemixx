@@ -51,5 +51,5 @@ create-dir: ## Create site path
 
 perm:
 	sudo chown -R root:www-data ${SITE_PATH}
-	sudo chmod chmod -R 775 ${SITE_PATH}
+	sudo chmod -R 775 ${SITE_PATH}
 default: help
