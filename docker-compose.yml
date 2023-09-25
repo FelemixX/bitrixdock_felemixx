@@ -10,7 +10,7 @@ networks:
 services:
   php:
     build: ./${PHP_VERSION}
-    container_name: php
+    container_name: ${COMPOSE_PROJECT_NAME}_php
     volumes_from:
       - source
     links:
@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
   web_server:
     build: ./${WEB_SERVER_TYPE}
-    container_name: web_server
+    container_name: ${COMPOSE_PROJECT_NAME}_web_server
     depends_on:
       - source
     volumes_from:
@@ -44,7 +44,7 @@ services:
     restart: unless-stopped
   db:
     build: ./${DB_SERVER_TYPE}
-    container_name: db
+    container_name: ${COMPOSE_PROJECT_NAME}_db
     volumes:
       - ./${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
     volumes_from:
@@ -65,7 +65,7 @@ services:
     restart: unless-stopped
   memcached:
     image: memcached:latest
-    container_name: memcached
+    container_name: ${COMPOSE_PROJECT_NAME}_memcached
     volumes_from:
       - source
     ports:
@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
   adminer:
     image: dockette/adminer:full
-    container_name: adminer
+    container_name: ${COMPOSE_PROJECT_NAME}_adminer
     links:
       - db:db
     ports:
@@ -92,14 +92,24 @@ services:
     tty: true
     networks:
       - bitrixdock
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+    restart: unless-stopped
+    ports:
+      - '${INTERFACE}:1025:1025'
+      - '${INTERFACE}:8025:8025'
+    networks:
+      - bitrixdock
   source:
     image: alpine:latest
-    container_name: source
+    container_name: ${COMPOSE_PROJECT_NAME}_source
     volumes:
       - ./logs/${WEB_SERVER_TYPE}:/var/log/${WEB_SERVER_TYPE}
       - ./logs/php:/var/log/php
       - ./logs/db:/var/log/mysql
       - ./logs/memcached:/var/log/memcached
+      - ./logs/mailhog:/var/log/mailhog
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
       - ${SITE_PATH}:/var/www/bitrix
