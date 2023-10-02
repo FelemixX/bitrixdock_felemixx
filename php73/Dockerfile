@@ -16,6 +16,7 @@ RUN apt-get update \
     php7.3-opcache \
     php7.3-zip \
     php-pear php-dev libmcrypt-dev gcc make autoconf libc-dev pkg-config \
+    cron \
     && pecl install mcrypt-1.0.3 \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
