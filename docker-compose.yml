@@ -77,9 +77,9 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
-  adminer:
-    image: dockette/adminer:full
-    container_name: ${COMPOSE_PROJECT_NAME}_adminer
+  phpmyadmin:
+    image:  phpmyadmin/phpmyadmin
+    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     links:
       - db:db
     ports:
@@ -87,6 +87,8 @@ services:
     environment:
       UPLOAD: 1024M # upload_max_filesize, post_max_size
       TZ: Europe/Moscow
+      PMA_HOST: mysql
+      PMA_ARBITRARY: 1
     restart: unless-stopped
     stdin_open: true
     tty: true

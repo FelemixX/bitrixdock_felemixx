@@ -3,4 +3,4 @@
 .fleet
 logs
 .env
-/www/*
+/www/
