@@ -31,6 +31,10 @@ RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 COPY ./php.ini /etc/php/8.1/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.1/cli/conf.d/90-php.ini
 
+#remove comments if browscap needed
+#COPY ./your_browscap.ini /etc/php/8.1/fpm/conf.d/browscap.ini
+#COPY ./your_browscap.ini /etc/php/8.1/cli/conf.d/browscap.ini
+
 RUN usermod -u 1000 www-data
 
 WORKDIR "/var/www/bitrix"
