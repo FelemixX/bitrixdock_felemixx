@@ -42,6 +42,37 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
+  cron:
+    build:
+      context: ./cron
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    container_name: cron
+    user: "www-data:www-data"
+    entrypoint: [ "sh", "-c", "crond -f" ]
+    volumes:
+      - ./logs/php:/var/log/php:rw
+      - php_session:/tmp/php_sessions/www:rw
+      - php_upload:/tmp/php_upload/www:rw
+      - tmp:/tmp:rw
+      - pid:/var/run:rw
+      - ${SITE_PATH}:/var/www/bitrix:rw
+      - /etc/localtime:/etc/localtime/:ro
+      - ./php/php.ini:/usr/local/etc/php/conf.d/z-custom.ini:ro
+      - ./php/php-fpm.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
+    links:
+      - db
+      - memcached
+    environment:
+      - TZ=Europe/Moscow
+    stdin_open: true
+    tty: true
+    networks:
+      - bitrix
+    restart: unless-stopped
+    read_only: true
   db:
     build: ./${DB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -78,7 +109,7 @@ services:
     tty: true
     restart: unless-stopped
   phpmyadmin:
-    image:  phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     links:
       - db:db
