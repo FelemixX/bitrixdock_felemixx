@@ -15,7 +15,6 @@ RUN apt-get update \
     php8.0-opcache \
     php8.0-zip \
     php-pear php8.0-dev libmcrypt-dev gcc make autoconf libc-dev pkg-config \
-    cron \
     && pecl install mcrypt-1.0.4 \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 

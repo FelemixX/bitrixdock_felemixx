@@ -15,7 +15,6 @@ RUN apt-get update \
     php7.4-opcache \
     php7.4-zip \
     php-pear php7.4-dev libmcrypt-dev gcc make autoconf libc-dev pkg-config \
-    cron \
     && pecl install mcrypt-1.0.4 \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
