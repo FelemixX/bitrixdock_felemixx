@@ -64,7 +64,6 @@ services:
     networks:
       - bitrixdock
     restart: unless-stopped
-    read_only: true
   db:
     build: ./${DB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_db
