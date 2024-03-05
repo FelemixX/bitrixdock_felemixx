@@ -1,2 +1,1 @@
-* * * * *  www-data cd /var/www/bitrix/ && php ./test.php >> ./cron.log 2>&1
-
+#your task here
