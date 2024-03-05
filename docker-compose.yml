@@ -22,7 +22,7 @@ services:
     tty: true
     networks:
       - bitrixdock
-    restart: unless-stopped
+    restart: on-failure
   web_server:
     build: ./${WEB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_web_server
@@ -41,7 +41,7 @@ services:
       - TZ=Europe/Moscow
     stdin_open: true
     tty: true
-    restart: unless-stopped
+    restart: on-failure
   cron:
     build:
       context: ./cron
@@ -63,7 +63,7 @@ services:
     tty: true
     networks:
       - bitrixdock
-    restart: unless-stopped
+    restart: on-failure
   db:
     build: ./${DB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -84,7 +84,7 @@ services:
       - bitrixdock
     stdin_open: true
     tty: true
-    restart: unless-stopped
+    restart: on-failure
   memcached:
     image: memcached:latest
     container_name: ${COMPOSE_PROJECT_NAME}_memcached
@@ -98,7 +98,7 @@ services:
       - TZ=Europe/Moscow
     stdin_open: true
     tty: true
-    restart: unless-stopped
+    restart: on-failure
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
@@ -111,7 +111,7 @@ services:
       TZ: Europe/Moscow
       PMA_HOST: mysql
       PMA_ARBITRARY: 1
-    restart: unless-stopped
+    restart: on-failure
     stdin_open: true
     tty: true
     networks:
@@ -119,7 +119,7 @@ services:
   mailhog:
     image: mailhog/mailhog
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
-    restart: unless-stopped
+    restart: on-failure
     ports:
       - '${INTERFACE}:1025:1025'
       - '${INTERFACE}:8025:8025'
@@ -134,6 +134,7 @@ services:
       - ./logs/db:/var/log/mysql
       - ./logs/memcached:/var/log/memcached
       - ./logs/mailhog:/var/log/mailhog
+      - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
       - ${SITE_PATH}:/var/www/bitrix
