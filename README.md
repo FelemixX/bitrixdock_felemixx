@@ -8,3 +8,17 @@ https://github.com/bitrixdock/bitrixdock
 2) Mailhog: 8025
 3) PHPMyAdmin: 8080
 4) MySQL: 3306
+
+Маппинг xdebug
+1) Абсолютный путь до корня сайта на сервере /var/www/bitrix/
+2) Путь до проекта на моем примере \\wsl$\Ubuntu\home\UserName\PhpstormProjects\YourProject\www
+
+Путь куда профилировщик по умолчанию складывает свои файлы
+1) В контейнере /var/log/php/
+2) В проекте /logs/php/
+
+Включение профилировщика
+1) Для включения профилировщика зайти в папку с php. Открыть php.ini -> в xdebug.mode добавить profile -> раскомментировать строки xdebug.output_diк \ xdebug.start_upon_error \ xdebug.start_with_request
+
+Настройка cron
+1) Для указания версии PHP на которой работает cron - указать версию пакета согласно репозиторию php в переменной CRON_PHP_VERSION (см. пример в .env.example)
