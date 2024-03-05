@@ -46,7 +46,7 @@ services:
     build:
       context: ./cron
       args:
-        - PHP_VERSION=${PHP_VERSION}
+        - PHP_VERSION=${CRON_PHP_VERSION}
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     container_name: ${COMPOSE_PROJECT_NAME}_cron

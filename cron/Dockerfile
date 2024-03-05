@@ -1,4 +1,6 @@
-FROM php:8.1-cli-alpine
+ARG PHP_VERSION
+
+FROM php:$PHP_VERSION-cli-alpine
 
 ARG UID
 ARG GID
