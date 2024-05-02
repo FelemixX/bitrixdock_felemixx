@@ -9,7 +9,7 @@ networks:
 
 services:
   php:
-    build: ./${PHP_VERSION}
+    build: ./php/${PHP_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_php
     volumes_from:
       - source
