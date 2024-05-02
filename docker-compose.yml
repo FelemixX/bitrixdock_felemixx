@@ -9,7 +9,7 @@ networks:
 
 services:
   php:
-    build: ./php/${PHP_VERSION}
+    build: ./docker/php/${PHP_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_php
     volumes_from:
       - source
@@ -24,7 +24,7 @@ services:
       - bitrixdock
     restart: on-failure
   web_server:
-    build: ./${WEB_SERVER_TYPE}
+    build: ./docker/${WEB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_web_server
     depends_on:
       - source
@@ -44,7 +44,7 @@ services:
     restart: on-failure
 #  cron:
 #    build:
-#      context: ./cron
+#      context: ./docker/cron
 #      args:
 #        - PHP_VERSION=${CRON_PHP_VERSION}
 #        - UID=${UID:-1000}
@@ -65,10 +65,10 @@ services:
 #      - bitrixdock
 #    restart: on-failure
   db:
-    build: ./${DB_SERVER_TYPE}
+    build: ./docker/${DB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_db
     volumes:
-      - ./${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
+      - ./docker/${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
     volumes_from:
       - source
     ports:
@@ -129,12 +129,12 @@ services:
     image: alpine:latest
     container_name: ${COMPOSE_PROJECT_NAME}_source
     volumes:
-      - ./logs/${WEB_SERVER_TYPE}:/var/log/${WEB_SERVER_TYPE}
-      - ./logs/php:/var/log/php
-      - ./logs/db:/var/log/mysql
-      - ./logs/memcached:/var/log/memcached
-      - ./logs/mailhog:/var/log/mailhog
-#      - ./logs/cron:/var/log/cron
+      - ./docker/logs/${WEB_SERVER_TYPE}:/var/log/${WEB_SERVER_TYPE}
+      - ./docker/logs/php:/var/log/php
+      - ./docker/logs/db:/var/log/mysql
+      - ./docker/logs/memcached:/var/log/memcached
+      - ./docker/logs/mailhog:/var/log/mailhog
+#      - ./docker/logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
       - ${SITE_PATH}:/var/www/bitrix
