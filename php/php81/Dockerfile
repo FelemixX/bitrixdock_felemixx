@@ -2,21 +2,19 @@ FROM phpdockerio/php:8.1-fpm
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    php8.1-memcached \
-    php8.1-memcache \
-    php8.1-mbstring \
-    php8.1-mysql \
-    php8.1-intl \
-    php8.1-xdebug \
-    php8.1-interbase \
-    php8.1-soap \
     php8.1-gd \
     php8.1-imagick \
+    php8.1-intl \
+    php8.1-interbase \
+    php8.1-mbstring \
+    php8.1-mcrypt \
+    php8.1-memcache \
+    php8.1-memcached \
+    php8.1-mysql \
     php8.1-opcache \
+    php8.1-soap \
     php8.1-zip \
-    php-pear php8.1-dev libmcrypt-dev gcc make autoconf libc-dev pkg-config \
-    && pecl install mcrypt-1.0.5 \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Sendmail
 RUN apt-get update &&\
