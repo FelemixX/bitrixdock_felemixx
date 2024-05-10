@@ -33,16 +33,16 @@ ps: ## Show list containers
 	docker-compose ps
 
 bitrix-setup: create-dir ## Download bitrixsetup.php file to the site path
-	wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O ${SITE_PATH}/bitrixsetup.php
+	curl -fsSL http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -o ${SITE_PATH}/bitrixsetup.php
 	make perm
 
 
 bitrix-restore: create-dir ## Download restore.php file to the site path
-	wget http://www.1c-bitrix.ru/download/scripts/restore.php -O ${SITE_PATH}/restore.php
+	curl -fsSL http://www.1c-bitrix.ru/download/scripts/restore.php -o ${SITE_PATH}/restore.php
 	make perm
 
 bitrix-server-test: create-dir ## Download bitrix_server_test.php file to the site path
-	wget https://dev.1c-bitrix.ru/download/scripts/bitrix_server_test.php -O ${SITE_PATH}/bitrix_server_test.php
+	curl -fsSL https://dev.1c-bitrix.ru/download/scripts/bitrix_server_test.php -o ${SITE_PATH}/bitrix_server_test.php
 	make perm
 
 create-dir: ## Create site path
