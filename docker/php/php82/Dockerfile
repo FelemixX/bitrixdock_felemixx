@@ -1,4 +1,4 @@
-FROM phpdockerio/php:8.2-fpm
+FROM phpdockerio/php:8.3-fpm
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
