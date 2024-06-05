@@ -18,10 +18,6 @@ updates:
     schedule:
       interval: "monthly"
   - package-ecosystem: "docker"
-    directory: "/docker/php/php83"
-    schedule:
-      interval: "monthly"
-  - package-ecosystem: "docker"
     directory: "/docker/php/php74"
     schedule:
       interval: "monthly"
