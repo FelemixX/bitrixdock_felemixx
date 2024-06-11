@@ -23,15 +23,3 @@ https://github.com/bitrixdock/bitrixdock
 
 Настройка cron
 1) Для указания версии PHP на которой работает cron - указать версию пакета согласно репозиторию php в переменной CRON_PHP_VERSION (см. пример в .env.example)
-
-
-UPD 2024: Так как докер поел говна - используем зеркала для подгрузки образов.
-
-Добавить в json конфига докера
-"registry-mirrors": [
-    "https://mirror.gcr.io",
-    "https://daocloud.io",
-    "https://c.163.com",
-    "https://registry.docker-cn.com",
-    "https://huecker.io"
-  ]
