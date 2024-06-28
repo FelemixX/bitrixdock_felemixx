@@ -15,8 +15,22 @@ RUN apt-get update \
     php7.4-soap \
     php7.4-xdebug \
     php7.4-zip \
+    git \
+    libtool \
+    autoconf \
+    build-essential \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
-# DO NOT install php7.4-xdebug package for site running in production! It will slow it down significantly.
+
+# Xhprof
+RUN git clone https://github.com/longxinH/xhprof.git ./xhprof \
+    && cd ./xhprof/extension \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && echo "extension=xhprof.so" > /etc/php/7.4/mods-available/xhprof.ini \
+    && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/cli/conf.d/20-xhprof.ini
 
 # Sendmail
 RUN apt-get update &&\

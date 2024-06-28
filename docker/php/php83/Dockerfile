@@ -16,7 +16,23 @@ RUN apt-get update \
     php8.3-soap \
     php8.3-xdebug \
     php8.3-zip \
+    curl \
+    git \
+    libtool \
+    autoconf \
+    build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+# Xhprof
+RUN git clone https://github.com/longxinH/xhprof.git ./xhprof \
+    && cd ./xhprof/extension \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && echo "extension=xhprof.so" > /etc/php/8.3/mods-available/xhprof.ini \
+    && ln -s /etc/php/8.3/mods-available/xhprof.ini /etc/php/8.3/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/8.3/mods-available/xhprof.ini /etc/php/8.3/cli/conf.d/20-xhprof.ini
 
 # Sendmail
 RUN apt-get update &&\
