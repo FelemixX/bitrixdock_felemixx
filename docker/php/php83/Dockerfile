@@ -16,6 +16,7 @@ RUN apt-get update \
     php8.3-soap \
     php8.3-xdebug \
     php8.3-zip \
+    php8.3-dev \
     curl \
     git \
     libtool \

@@ -15,6 +15,8 @@ RUN apt-get update \
     php8.0-soap \
     php8.0-xdebug \
     php8.0-zip \
+    php8.0-dev \
+    curl \
     git \
     libtool \
     autoconf \

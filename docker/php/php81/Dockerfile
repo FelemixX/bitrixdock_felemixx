@@ -15,6 +15,7 @@ RUN apt-get update \
     php8.1-soap \
     php8.1-xdebug \
     php8.1-zip \
+    php8.1-dev \
     curl \
     git \
     libtool \

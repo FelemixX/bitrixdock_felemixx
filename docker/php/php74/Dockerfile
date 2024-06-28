@@ -15,6 +15,8 @@ RUN apt-get update \
     php7.4-soap \
     php7.4-xdebug \
     php7.4-zip \
+    php7.4-dev \
+    curl \
     git \
     libtool \
     autoconf \
