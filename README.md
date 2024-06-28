@@ -9,6 +9,7 @@ https://github.com/bitrixdock/bitrixdock
 3) PHPMyAdmin: 8080 (закомментирован в docker-compose. Раскомментировать при надобности)
 4) MySQL: 3306
 5) Cron: 80 (закомментирован в docker-compose. Раскомментировать при надобности)
+6) Xhprof Viewer: 8080 (по умолчанию. Если не нужен рекомендуется убрать его сборку, потому что она долгая)
 
 Маппинг xdebug
 1) Абсолютный путь до корня сайта на сервере /var/www/bitrix/
@@ -23,15 +24,3 @@ https://github.com/bitrixdock/bitrixdock
 
 Настройка cron
 1) Для указания версии PHP на которой работает cron - указать версию пакета согласно репозиторию php в переменной CRON_PHP_VERSION (см. пример в .env.example)
-
-
-UPD 2024: Так как докер поел говна - используем зеркала для подгрузки образов.
-
-Добавить в json конфига докера
-"registry-mirrors": [
-    "https://mirror.gcr.io",
-    "https://daocloud.io",
-    "https://c.163.com",
-    "https://registry.docker-cn.com",
-    "https://huecker.io"
-  ]
