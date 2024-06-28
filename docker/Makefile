@@ -1,4 +1,4 @@
-include .env
+include ./docker/.env
 
 .DEFAULT_GOAL := help
 

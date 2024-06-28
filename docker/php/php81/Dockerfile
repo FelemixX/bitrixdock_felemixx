@@ -13,6 +13,7 @@ RUN apt-get update \
     php8.1-mysql \
     php8.1-opcache \
     php8.1-soap \
+    php8.1-xdebug \
     php8.1-zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 

@@ -14,6 +14,7 @@ RUN apt-get update \
     php8.3-mysql \
     php8.3-opcache \
     php8.3-soap \
+    php8.3-xdebug \
     php8.3-zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
