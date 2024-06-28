@@ -15,12 +15,26 @@ RUN apt-get update \
     php8.2-soap \
     php8.2-xdebug \
     php8.2-zip \
+    php8.2-dev \
+    curl \
+    git \
+    libtool \
+    autoconf \
+    build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
+# Xhprof
+RUN git clone https://github.com/longxinH/xhprof.git ./xhprof \
+    && cd ./xhprof/extension \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && echo "extension=xhprof.so" > /etc/php/8.2/mods-available/xhprof.ini \
+    && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
+
 # Sendmail
-RUN apt-get update &&\
-    apt-get install --no-install-recommends --assume-yes --quiet ca-certificates curl git &&\
-    rm -rf /var/lib/apt/lists/*
 RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
 RUN go get github.com/mailhog/mhsendmail

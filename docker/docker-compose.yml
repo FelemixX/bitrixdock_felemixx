@@ -16,6 +16,7 @@ services:
     links:
       - db
       - memcached
+      - xhprof-viewer
     environment:
       - TZ=Europe/Moscow
     stdin_open: true
@@ -42,28 +43,28 @@ services:
     stdin_open: true
     tty: true
     restart: on-failure
-#  cron:
-#    build:
-#      context: ./cron
-#      args:
-#        - PHP_VERSION=${CRON_PHP_VERSION}
-#        - UID=${UID:-1000}
-#        - GID=${GID:-1000}
-#    container_name: ${COMPOSE_PROJECT_NAME}_cron
-#    user: "www-data:www-data"
-#    entrypoint: [ "sh", "-c", "crond -f" ]
-#    volumes_from:
-#      - source
-#    links:
-#      - db
-#      - memcached
-#    environment:
-#      - TZ=Europe/Moscow
-#    stdin_open: true
-#    tty: true
-#    networks:
-#      - bitrixdock
-#    restart: on-failure
+  #  cron:
+  #    build:
+  #      context: ./cron
+  #      args:
+  #        - PHP_VERSION=${CRON_PHP_VERSION}
+  #        - UID=${UID:-1000}
+  #        - GID=${GID:-1000}
+  #    container_name: ${COMPOSE_PROJECT_NAME}_cron
+  #    user: "www-data:www-data"
+  #    entrypoint: [ "sh", "-c", "crond -f" ]
+  #    volumes_from:
+  #      - source
+  #    links:
+  #      - db
+  #      - memcached
+  #    environment:
+  #      - TZ=Europe/Moscow
+  #    stdin_open: true
+  #    tty: true
+  #    networks:
+  #      - bitrixdock
+  #    restart: on-failure
   db:
     build: ./${DB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_db
@@ -99,23 +100,23 @@ services:
     stdin_open: true
     tty: true
     restart: on-failure
-#  phpmyadmin:
-#    image: phpmyadmin/phpmyadmin
-#    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
-#    links:
-#      - db:db
-#    ports:
-#      - '${INTERFACE}:8080:80'
-#    environment:
-#      UPLOAD: 1024M # upload_max_filesize, post_max_size
-#      TZ: Europe/Moscow
-#      PMA_HOST: mysql
-#      PMA_ARBITRARY: 1
-#    restart: on-failure
-#    stdin_open: true
-#    tty: true
-#    networks:
-#      - bitrixdock
+  #  phpmyadmin:
+  #    image: phpmyadmin/phpmyadmin
+  #    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+  #    links:
+  #      - db:db
+  #    ports:
+  #      - '${INTERFACE}:8080:80'
+  #    environment:
+  #      UPLOAD: 1024M # upload_max_filesize, post_max_size
+  #      TZ: Europe/Moscow
+  #      PMA_HOST: mysql
+  #      PMA_ARBITRARY: 1
+  #    restart: on-failure
+  #    stdin_open: true
+  #    tty: true
+  #    networks:
+  #      - bitrixdock
   mailhog:
     image: mailhog/mailhog
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
@@ -125,6 +126,19 @@ services:
       - '${INTERFACE}:8025:8025'
     networks:
       - bitrixdock
+  xhprof-viewer:
+    build: ./xhprof-viewer
+    container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
+    restart: on-failure
+    networks:
+      - bitrixdock
+    volumes:
+      - ./xhprof-viewer/viewer:/var/www/html/
+      - ./logs/xhprof:/var/log/xhprof
+    volumes_from:
+      - source
+    ports:
+      - ${XHPROF_VIEWER_PORT}:80
   source:
     image: alpine:latest
     container_name: ${COMPOSE_PROJECT_NAME}_source
@@ -134,7 +148,8 @@ services:
       - ./logs/db:/var/log/mysql
       - ./logs/memcached:/var/log/memcached
       - ./logs/mailhog:/var/log/mailhog
-#      - ./logs/cron:/var/log/cron
+      - ./logs/xhprof:/var/log/xhprof
+      #      - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
       - ${SITE_PATH}:/var/www/bitrix
