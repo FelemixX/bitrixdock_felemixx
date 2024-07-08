@@ -32,8 +32,8 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && make \
     && make install \
     && echo "extension=xhprof.so" > /etc/php/8.2/mods-available/xhprof.ini \
-    && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/fpm/conf.d/20-xhprof.ini \
-    && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
+    && ln -s /etc/php/8.0/mods-available/xhprof.ini /etc/php/8.0/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/8.0/mods-available/xhprof.ini /etc/php/8.0/cli/conf.d/20-xhprof.ini
 
 # Sendmail
 RUN go install github.com/mailhog/MailHog@latest
