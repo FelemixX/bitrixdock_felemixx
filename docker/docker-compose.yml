@@ -3,6 +3,8 @@ volumes:
     driver: local
   cache:
     driver: local
+  mailpit:
+    driver: local
 
 networks:
   bitrixdock:
@@ -16,7 +18,6 @@ services:
     links:
       - db
       - memcached
-      - xhprof-viewer
     environment:
       - TZ=Europe/Moscow
     stdin_open: true
@@ -126,10 +127,10 @@ services:
       - '${INTERFACE}:8025:8025'
     networks:
       - bitrixdock
-    volumes:
-      - ./mailpit-data:/data
-      - ./logs/mailpit:/var/log/mailpit
+    volumes_from:
+      - source
     environment:
+      TZ: Europe/Moscow
       MP_MAX_MESSAGES: 5000
       MP_DATA_FILE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
@@ -163,6 +164,7 @@ services:
       #      - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
+      - mailpit:/data
       - ${SITE_PATH}:/var/www/bitrix
       - /etc/localtime:/etc/localtime/:ro
     networks:
