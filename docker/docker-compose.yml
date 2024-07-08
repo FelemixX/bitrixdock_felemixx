@@ -117,15 +117,26 @@ services:
   #    tty: true
   #    networks:
   #      - bitrixdock
-  mailhog:
-    image: mailhog/mailhog
-    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+  mailpit:
+    image: axllent/mailpit
+    container_name: ${COMPOSE_PROJECT_NAME}_mailpit
     restart: on-failure
     ports:
       - '${INTERFACE}:1025:1025'
       - '${INTERFACE}:8025:8025'
     networks:
       - bitrixdock
+    volumes:
+      - ./mailpit-data:/data
+      - ./logs/mailpit:/var/log/mailpit
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SENDMAIL_SMTP_ADDR: mailpit:1025
+      MP_LOG_FILE: /var/log/mailpit/error.log
+      MP_QUIET: true
   xhprof-viewer:
     build: ./xhprof-viewer
     container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
@@ -147,7 +158,7 @@ services:
       - ./logs/php:/var/log/php
       - ./logs/db:/var/log/mysql
       - ./logs/memcached:/var/log/memcached
-      - ./logs/mailhog:/var/log/mailhog
+      - ./logs/mailpit:/var/log/mailpit
       - ./logs/xhprof:/var/log/xhprof
       #      - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
