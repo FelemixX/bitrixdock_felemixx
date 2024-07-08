@@ -36,7 +36,8 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN go install github.com/mailhog/MailHog@latest
+RUN go install github.com/mailhog/mhsendmail@latest
+RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
 COPY ./php.ini /etc/php/7.4/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/7.4/cli/conf.d/90-php.ini
