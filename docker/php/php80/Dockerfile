@@ -36,8 +36,12 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/8.0/mods-available/xhprof.ini /etc/php/8.0/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN go install github.com/mailhog/mhsendmail@latest
-RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+    && cd ./mailpit \
+    && chmod +x ./install.sh \
+    && ./install.sh \
+    && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
+    && rm -rf mailpit/
 
 COPY ./php.ini /etc/php/8.0/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.0/cli/conf.d/90-php.ini
