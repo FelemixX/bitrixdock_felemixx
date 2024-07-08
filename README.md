@@ -5,7 +5,7 @@ https://github.com/bitrixdock/bitrixdock
 
 Привязки контейнеров к портам
 1) Nginx\Apache: 80
-2) Mailhog: 8025
+2) Mailpit: 8025
 3) PHPMyAdmin: 8080 (закомментирован в docker-compose. Раскомментировать при надобности)
 4) MySQL: 3306
 5) Cron: 80 (закомментирован в docker-compose. Раскомментировать при надобности)
