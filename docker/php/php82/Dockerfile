@@ -24,7 +24,7 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xhprof
-RUN git clone https://github.com/longxinH/xhprof.git ./xhprof \
+RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && cd ./xhprof/extension \
     && phpize \
     && ./configure \
@@ -35,10 +35,12 @@ RUN git clone https://github.com/longxinH/xhprof.git ./xhprof \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
-ENV PATH /usr/local/go/bin:$PATH
-RUN go get github.com/mailhog/mhsendmail
-RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+    && cd ./mailpit \
+    && chmod +x ./install.sh \
+    && ./install.sh \
+    && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
+    && rm -rf mailpit/
 
 COPY ./php.ini /etc/php/8.2/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.2/cli/conf.d/90-php.ini
