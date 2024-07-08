@@ -31,7 +31,7 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ./configure \
     && make \
     && make install \
-    && echo "extension=xhprof.so" > /etc/php/8.2/mods-available/xhprof.ini \
+    && echo "extension=xhprof.so" > /etc/php/7.4/mods-available/xhprof.ini \
     && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/fpm/conf.d/20-xhprof.ini \
     && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/cli/conf.d/20-xhprof.ini
 
