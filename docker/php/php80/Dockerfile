@@ -10,6 +10,7 @@ RUN apt-get update \
     php8.0-mcrypt \
     php8.0-memcache \
     php8.0-memcached \
+    php8.0-redis \
     php8.0-mysql \
     php8.0-opcache \
     php8.0-soap \

@@ -11,6 +11,7 @@ RUN apt-get update \
     php8.3-mcrypt \
     php8.3-memcache \
     php8.3-memcached \
+    php8.3-redis \
     php8.3-mysql \
     php8.3-opcache \
     php8.3-soap \

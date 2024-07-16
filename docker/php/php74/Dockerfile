@@ -10,6 +10,7 @@ RUN apt-get update \
     php7.4-mcrypt \
     php7.4-memcache \
     php7.4-memcached \
+    php7.4-redis \
     php7.4-mysql \
     php7.4-opcache \
     php7.4-soap \
