@@ -36,7 +36,7 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && cd ./mailpit \
     && chmod +x ./install.sh \
     && ./install.sh \
