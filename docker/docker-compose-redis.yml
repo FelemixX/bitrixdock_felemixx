@@ -1,0 +1,171 @@
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local
+  mailpit:
+    driver: local
+
+networks:
+  bitrixdock:
+
+services:
+  php:
+    build: ./php/${PHP_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    volumes_from:
+      - source
+    links:
+      - db
+      - redis
+    environment:
+      - TZ=Europe/Moscow
+    stdin_open: true
+    tty: true
+    networks:
+      - bitrixdock
+    restart: on-failure
+  web_server:
+    build: ./${WEB_SERVER_TYPE}
+    container_name: ${COMPOSE_PROJECT_NAME}_web_server
+    depends_on:
+      - source
+    volumes_from:
+      - source
+    ports:
+      - '${INTERFACE}:80:80'
+      - '${INTERFACE}:443:443'
+    links:
+      - php
+    networks:
+      - bitrixdock
+    environment:
+      - TZ=Europe/Moscow
+    stdin_open: true
+    tty: true
+    restart: on-failure
+  #  cron:
+  #    build:
+  #      context: ./cron
+  #      args:
+  #        - PHP_VERSION=${CRON_PHP_VERSION}
+  #        - UID=${UID:-1000}
+  #        - GID=${GID:-1000}
+  #    container_name: ${COMPOSE_PROJECT_NAME}_cron
+  #    user: "www-data:www-data"
+  #    entrypoint: [ "sh", "-c", "crond -f" ]
+  #    volumes_from:
+  #      - source
+  #    links:
+  #      - db
+  #      - redis
+  #    environment:
+  #      - TZ=Europe/Moscow
+  #    stdin_open: true
+  #    tty: true
+  #    networks:
+  #      - bitrixdock
+  #    restart: on-failure
+  db:
+    build: ./${DB_SERVER_TYPE}
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    volumes:
+      - ./${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
+    volumes_from:
+      - source
+    ports:
+      - '${INTERFACE}:3306:3306'
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: Europe/Moscow
+    command: mysqld --user=root --sql-mode=""
+    networks:
+      - bitrixdock
+    stdin_open: true
+    tty: true
+    restart: on-failure
+  redis:
+    image: redis:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    volumes_from:
+      - source
+    ports:
+      - '${INTERFACE}:6379:6379'
+    networks:
+      - bitrixdock
+    environment:
+      - TZ=Europe/Moscow
+    stdin_open: true
+    tty: true
+    restart: on-failure
+  #  phpmyadmin:
+  #    image: phpmyadmin/phpmyadmin
+  #    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+  #    links:
+  #      - db:db
+  #    ports:
+  #      - '${INTERFACE}:8080:80'
+  #    environment:
+  #      UPLOAD: 1024M # upload_max_filesize, post_max_size
+  #      TZ: Europe/Moscow
+  #      PMA_HOST: mysql
+  #      PMA_ARBITRARY: 1
+  #    restart: on-failure
+  #    stdin_open: true
+  #    tty: true
+  #    networks:
+  #      - bitrixdock
+  mailpit:
+    image: axllent/mailpit
+    container_name: ${COMPOSE_PROJECT_NAME}_mailpit
+    restart: on-failure
+    ports:
+      - '${INTERFACE}:1025:1025'
+      - '${INTERFACE}:8025:8025'
+    networks:
+      - bitrixdock
+    volumes_from:
+      - source
+    environment:
+      TZ: Europe/Moscow
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SENDMAIL_SMTP_ADDR: mailpit:1025
+      MP_LOG_FILE: /var/log/mailpit/error.log
+      MP_QUIET: true
+  xhprof-viewer:
+    build: ./xhprof-viewer
+    container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
+    restart: on-failure
+    networks:
+      - bitrixdock
+    volumes:
+      - ./xhprof-viewer/viewer:/var/www/html/
+      - ./logs/xhprof:/var/log/xhprof
+    volumes_from:
+      - source
+    ports:
+      - ${XHPROF_VIEWER_PORT}:80
+  source:
+    image: alpine:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_source
+    volumes:
+      - ./logs/${WEB_SERVER_TYPE}:/var/log/${WEB_SERVER_TYPE}
+      - ./logs/php:/var/log/php
+      - ./logs/db:/var/log/mysql
+      - ./logs/redis:/var/log/redis
+      - ./logs/mailpit:/var/log/mailpit
+      - ./logs/xhprof:/var/log/xhprof
+      #      - ./logs/cron:/var/log/cron
+      - db:/var/lib/mysql
+      - cache:/var/lib/redis
+      - mailpit:/data
+      - ${SITE_PATH}:/var/www/bitrix
+      - /etc/localtime:/etc/localtime/:ro
+    networks:
+      - bitrixdock

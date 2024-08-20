@@ -10,6 +10,7 @@ RUN apt-get update \
     php8.1-mcrypt \
     php8.1-memcache \
     php8.1-memcached \
+    php8.1-redis \
     php8.1-mysql \
     php8.1-opcache \
     php8.1-soap \
@@ -35,7 +36,7 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/8.1/mods-available/xhprof.ini /etc/php/8.1/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && cd ./mailpit \
     && chmod +x ./install.sh \
     && ./install.sh \

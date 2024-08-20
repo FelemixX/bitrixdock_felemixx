@@ -2,7 +2,6 @@ FROM phpdockerio/php:8.3-fpm
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    php8.3-dev \
     php8.3-gd \
     php8.3-imagick \
     php8.3-intl \
@@ -11,6 +10,7 @@ RUN apt-get update \
     php8.3-mcrypt \
     php8.3-memcache \
     php8.3-memcached \
+    php8.3-redis \
     php8.3-mysql \
     php8.3-opcache \
     php8.3-soap \
@@ -22,7 +22,6 @@ RUN apt-get update \
     libtool \
     autoconf \
     build-essential \
-    golang-go \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xhprof
@@ -37,7 +36,7 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/8.3/mods-available/xhprof.ini /etc/php/8.3/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && cd ./mailpit \
     && chmod +x ./install.sh \
     && ./install.sh \

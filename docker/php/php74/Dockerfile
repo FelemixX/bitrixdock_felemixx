@@ -10,6 +10,7 @@ RUN apt-get update \
     php7.4-mcrypt \
     php7.4-memcache \
     php7.4-memcached \
+    php7.4-redis \
     php7.4-mysql \
     php7.4-opcache \
     php7.4-soap \
@@ -35,7 +36,7 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/7.4/mods-available/xhprof.ini /etc/php/7.4/cli/conf.d/20-xhprof.ini
 
 # Sendmail
-RUN git clone https://github.com/axllent/mailpit.git ./mailpit \
+RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && cd ./mailpit \
     && chmod +x ./install.sh \
     && ./install.sh \
