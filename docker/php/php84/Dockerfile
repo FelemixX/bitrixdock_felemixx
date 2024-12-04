@@ -47,7 +47,7 @@ RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
 #COPY ./php.ini /etc/php/8.4/fpm/conf.d/90-php.ini
 #COPY ./php.ini /etc/php/8.4/cli/conf.d/90-php.ini
 
-RUN usermod -u 1001 www-data
+RUN usermod -u 1000 www-data
 
 WORKDIR "/var/www/bitrix"
 
