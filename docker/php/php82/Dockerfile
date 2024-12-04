@@ -22,6 +22,7 @@ RUN apt-get update \
     libtool \
     autoconf \
     build-essential \
+    sendmail \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xhprof
@@ -34,14 +35,6 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && echo "extension=xhprof.so" > /etc/php/8.2/mods-available/xhprof.ini \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/fpm/conf.d/20-xhprof.ini \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
-
-# Sendmail
-RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
-    && cd ./mailpit \
-    && chmod +x ./install.sh \
-    && ./install.sh \
-    && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
-    && rm -rf mailpit/
 
 COPY ./php.ini /etc/php/8.2/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.2/cli/conf.d/90-php.ini
