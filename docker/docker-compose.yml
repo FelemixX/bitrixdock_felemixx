@@ -151,7 +151,7 @@ services:
       - ./logs/db:/var/log/mysql
       - ./logs/memcached:/var/log/memcached
       - ./logs/xhprof:/var/log/xhprof
-      - #      - ./logs/cron:/var/log/cron
+      # - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/memcached
       - ${SITE_PATH}:/var/www/bitrix
