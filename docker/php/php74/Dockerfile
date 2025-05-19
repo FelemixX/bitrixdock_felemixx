@@ -22,6 +22,9 @@ RUN apt-get update \
     libtool \
     autoconf \
     build-essential \
+    msmtp \
+    mailutils \
+    && rm -rf /var/lib/apt/lists/* \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xhprof

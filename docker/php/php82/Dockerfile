@@ -22,6 +22,9 @@ RUN apt-get update \
     libtool \
     autoconf \
     build-essential \
+    msmtp \
+    mailutils \
+    && rm -rf /var/lib/apt/lists/* \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xhprof
@@ -35,20 +38,14 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/fpm/conf.d/20-xhprof.ini \
     && ln -s /etc/php/8.2/mods-available/xhprof.ini /etc/php/8.2/cli/conf.d/20-xhprof.ini
 
-# Sendmail
-RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
-    && cd ./mailpit \
-    && chmod +x ./install.sh \
-    && ./install.sh \
-    && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
-    && rm -rf mailpit/
-
 COPY ./php.ini /etc/php/8.2/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.2/cli/conf.d/90-php.ini
 
-#remove comments if browscap needed
-#COPY ./your_browscap.ini /etc/php/8.2/fpm/conf.d/browscap.ini
-#COPY ./your_browscap.ini /etc/php/8.2/cli/conf.d/browscap.ini
+COPY msmtprc /etc/msmtprc
+RUN chown www-data:www-data /etc/msmtprc && \
+    chmod 755 /etc/msmtprc && \
+    touch /var/log/msmtp.log && \
+    chown www-data:www-data /var/log/msmtp.log
 
 RUN usermod -u 1000 www-data
 

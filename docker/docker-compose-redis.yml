@@ -3,8 +3,6 @@ volumes:
     driver: local
   cache:
     driver: local
-  mailpit:
-    driver: local
 
 networks:
   bitrixdock:
@@ -118,26 +116,19 @@ services:
   #    tty: true
   #    networks:
   #      - bitrixdock
-  mailpit:
-    image: axllent/mailpit
-    container_name: ${COMPOSE_PROJECT_NAME}_mailpit
-    restart: on-failure
+  buggregator:
+    image: ghcr.io/buggregator/server:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_buggregator
     ports:
-      - '${INTERFACE}:1025:1025'
-      - '${INTERFACE}:8025:8025'
+      - '${INTERFACE}:1025:1025'  # SMTP
+      - '${INTERFACE}:8000:8000'  # Web UI
     networks:
       - bitrixdock
-    volumes_from:
-      - source
     environment:
-      TZ: Europe/Moscow
-      MP_MAX_MESSAGES: 5000
-      MP_DATA_FILE: /data/mailpit.db
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-      MP_SENDMAIL_SMTP_ADDR: mailpit:1025
-      MP_LOG_FILE: /var/log/mailpit/error.log
-      MP_QUIET: true
+      - TZ=Europe/Moscow
+    volumes:
+      - ./logs/xhprof:/var/log/xhprof
+    restart: unless-stopped
   xhprof-viewer:
     build: ./xhprof-viewer
     container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
@@ -159,12 +150,10 @@ services:
       - ./logs/php:/var/log/php
       - ./logs/db:/var/log/mysql
       - ./logs/redis:/var/log/redis
-      - ./logs/mailpit:/var/log/mailpit
       - ./logs/xhprof:/var/log/xhprof
       #      - ./logs/cron:/var/log/cron
       - db:/var/lib/mysql
       - cache:/var/lib/redis
-      - mailpit:/data
       - ${SITE_PATH}:/var/www/bitrix
       - /etc/localtime:/etc/localtime/:ro
     networks:
