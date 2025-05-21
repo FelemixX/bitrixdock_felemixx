@@ -24,7 +24,6 @@ services:
     tty: true
     networks:
       - bitrix
-    user: '${UID}:${GID}'
     restart: on-failure
   web_server:
     build: ./${WEB_SERVER_TYPE}
