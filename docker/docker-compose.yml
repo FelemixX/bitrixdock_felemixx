@@ -7,7 +7,7 @@ volumes:
     driver: local
 
 networks:
-  bitrixdock:
+  bitrix:
 
 services:
   php:
@@ -23,7 +23,8 @@ services:
     stdin_open: true
     tty: true
     networks:
-      - bitrixdock
+      - bitrix
+    user: '${UID}:${GID}'
     restart: on-failure
   web_server:
     build: ./${WEB_SERVER_TYPE}
@@ -38,7 +39,7 @@ services:
     links:
       - php
     networks:
-      - bitrixdock
+      - bitrix
     environment:
       - TZ=Europe/Moscow
     stdin_open: true
@@ -64,7 +65,7 @@ services:
   #    stdin_open: true
   #    tty: true
   #    networks:
-  #      - bitrixdock
+  #      - bitrix
   #    restart: on-failure
   db:
     build: ./${DB_SERVER_TYPE}
@@ -83,7 +84,7 @@ services:
       TZ: Europe/Moscow
     command: mysqld --user=root --sql-mode=""
     networks:
-      - bitrixdock
+      - bitrix
     stdin_open: true
     tty: true
     restart: on-failure
@@ -95,7 +96,7 @@ services:
     ports:
       - '${INTERFACE}:11211:11211'
     networks:
-      - bitrixdock
+      - bitrix
     environment:
       - TZ=Europe/Moscow
     stdin_open: true
@@ -117,7 +118,7 @@ services:
   #    stdin_open: true
   #    tty: true
   #    networks:
-  #      - bitrixdock
+  #      - bitrix
   mailpit:
     image: axllent/mailpit
     container_name: ${COMPOSE_PROJECT_NAME}_mailpit
@@ -126,7 +127,7 @@ services:
       - '${INTERFACE}:1025:1025'
       - '${INTERFACE}:8025:8025'
     networks:
-      - bitrixdock
+      - bitrix
     volumes_from:
       - source
     environment:
@@ -143,7 +144,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
     restart: on-failure
     networks:
-      - bitrixdock
+      - bitrix
     volumes:
       - ./xhprof-viewer/viewer:/var/www/html/
       - ./logs/xhprof:/var/log/xhprof
@@ -168,4 +169,4 @@ services:
       - ${SITE_PATH}:/var/www/bitrix
       - /etc/localtime:/etc/localtime/:ro
     networks:
-      - bitrixdock
+      - bitrix
