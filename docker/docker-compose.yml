@@ -105,7 +105,6 @@ services:
 
   mailpit:
     image: axllent/mailpit
-#    container_name: ${COMPOSE_PROJECT_NAME}_mailpit
     restart: on-failure
     ports:
       - '${INTERFACE}:1025:1025'
@@ -128,7 +127,6 @@ services:
 
   xhprof-viewer:
     build: ./xhprof-viewer
-#    container_name: ${COMPOSE_PROJECT_NAME}_xhprof-viewer
     restart: on-failure
     networks:
       - bitrixdock
