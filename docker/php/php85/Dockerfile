@@ -1,22 +1,21 @@
-FROM phpdockerio/php:8.4-fpm
+FROM phpdockerio/php:8.5-fpm
+
+LABEL org.opencontainers.image.source="https://github.com/bitrixdock/bitrixdock"
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    php8.4-gd \
-    php8.4-imagick \
-    php8.4-intl \
-    php8.4-interbase \
-    php8.4-mbstring \
-    php8.4-mcrypt \
-    php8.4-memcache \
-    php8.4-memcached \
-    php8.4-redis \
-    php8.4-mysql \
-    php8.4-opcache \
-    php8.4-soap \
-    php8.4-xdebug \
-    php8.4-zip \
-    php8.4-dev \
+    php8.5-gd \
+    php8.5-imagick \
+    php8.5-intl \
+    php8.5-interbase \
+    php8.5-mcrypt \
+    php8.5-memcached \
+    php8.5-redis \
+    php8.5-mysql \
+    php8.5-soap \
+    php8.5-xdebug \
+    php8.5-zip \
+    php8.5-dev \
     curl \
     git \
     libtool \
@@ -31,9 +30,9 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ./configure \
     && make \
     && make install \
-    && echo "extension=xhprof.so" > /etc/php/8.4/mods-available/xhprof.ini \
-    && ln -s /etc/php/8.4/mods-available/xhprof.ini /etc/php/8.4/fpm/conf.d/20-xhprof.ini \
-    && ln -s /etc/php/8.4/mods-available/xhprof.ini /etc/php/8.4/cli/conf.d/20-xhprof.ini
+    && echo "extension=xhprof.so" > /etc/php/8.5/mods-available/xhprof.ini \
+    && ln -s /etc/php/8.5/mods-available/xhprof.ini /etc/php/8.5/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/8.5/mods-available/xhprof.ini /etc/php/8.5/cli/conf.d/20-xhprof.ini
 
 # Sendmail
 RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
@@ -43,9 +42,8 @@ RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
     && rm -rf mailpit/
 
-
-COPY ./php.ini /etc/php/8.4/fpm/conf.d/90-php.ini
-COPY ./php.ini /etc/php/8.4/cli/conf.d/90-php.ini
+COPY ./php.ini /etc/php/8.5/fpm/conf.d/90-php.ini
+COPY ./php.ini /etc/php/8.5/cli/conf.d/90-php.ini
 
 RUN usermod -u 2000 ubuntu
 RUN usermod -u 1000 www-data
