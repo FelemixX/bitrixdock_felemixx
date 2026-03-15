@@ -8,9 +8,7 @@ RUN apt-get update \
     php8.5-imagick \
     php8.5-intl \
     php8.5-interbase \
-    php8.5-mbstring \
     php8.5-mcrypt \
-    php8.5-memcache \
     php8.5-memcached \
     php8.5-redis \
     php8.5-mysql \
