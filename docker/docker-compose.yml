@@ -36,9 +36,10 @@ services:
       - "push-server-sub:172.19.0.10"
       - "push-server-pub:172.19.0.11"
 
-  db:
-    build: ./${DB_SERVER_TYPE}
+  db-mysql:
+    build: ./mysql
     platform: linux/amd64
+    hostname: 'db'
     volumes:
       - ./${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
       - ./logs/db:/var/log/mysql
@@ -55,6 +56,28 @@ services:
     networks:
       - bitrixdock
     restart: unless-stopped
+    profiles:
+      - mysql
+
+  db-postgres:
+    build: ./postgres
+    hostname: 'db'
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      - ./logs/db-pg:/var/log/postgresql
+      - db-pg:/var/lib/postgresql/data
+    ports:
+      - '${INTERFACE}:5432:5432' # Для PG порт обычно фиксирован 5432
+    environment:
+      POSTGRES_DB: ${MYSQL_DATABASE}
+      POSTGRES_USER: ${MYSQL_USER}
+      POSTGRES_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Europe/Moscow
+    networks:
+      - bitrixdock
+    restart: unless-stopped
+    profiles:
+      - postgres
 
   memcached:
     image: memcached:latest
@@ -140,6 +163,8 @@ services:
 volumes:
   db:
     driver: local
+  db-pg:
+      driver: local
   mailpit:
     driver: local
 

@@ -12,6 +12,8 @@ RUN apt-get update \
     php8.5-memcached \
     php8.5-redis \
     php8.5-mysql \
+    php8.5-pgsql \
+    php8.5-pdo-pgsql \
     php8.5-soap \
     php8.5-xdebug \
     php8.5-zip \

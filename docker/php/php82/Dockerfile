@@ -12,6 +12,8 @@ RUN apt-get update \
     php8.2-memcached \
     php8.2-redis \
     php8.2-mysql \
+    php8.5-pgsql \
+    php8.5-pdo-pgsql \
     php8.2-opcache \
     php8.2-soap \
     php8.2-xdebug \
