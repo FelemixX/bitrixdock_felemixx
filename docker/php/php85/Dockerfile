@@ -14,7 +14,6 @@ RUN apt-get update \
     php8.5-memcached \
     php8.5-redis \
     php8.5-mysql \
-    php8.5-opcache \
     php8.5-soap \
     php8.5-xdebug \
     php8.5-zip \
@@ -33,9 +32,9 @@ RUN git clone https://github.com/FelemixX/xhprof.git ./xhprof \
     && ./configure \
     && make \
     && make install \
-    && echo "extension=xhprof.so" > /etc/php/8.0/mods-available/xhprof.ini \
-    && ln -s /etc/php/8.0/mods-available/xhprof.ini /etc/php/8.0/fpm/conf.d/20-xhprof.ini \
-    && ln -s /etc/php/8.0/mods-available/xhprof.ini /etc/php/8.0/cli/conf.d/20-xhprof.ini
+    && echo "extension=xhprof.so" > /etc/php/8.5/mods-available/xhprof.ini \
+    && ln -s /etc/php/8.5/mods-available/xhprof.ini /etc/php/8.5/fpm/conf.d/20-xhprof.ini \
+    && ln -s /etc/php/8.5/mods-available/xhprof.ini /etc/php/8.5/cli/conf.d/20-xhprof.ini
 
 # Sendmail
 RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
@@ -44,9 +43,6 @@ RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
     && ./install.sh \
     && ln -s /usr/local/bin/mailpit /usr/sbin/sendmail \
     && rm -rf mailpit/
-
-COPY ./php.ini /etc/php/8.0/fpm/conf.d/90-php.ini
-COPY ./php.ini /etc/php/8.0/cli/conf.d/90-php.ini
 
 COPY ./php.ini /etc/php/8.5/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.5/cli/conf.d/90-php.ini
