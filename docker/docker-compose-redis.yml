@@ -25,6 +25,10 @@ services:
     networks:
       - bitrixdock
     restart: on-failure
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
   web_server:
     build: ./${WEB_SERVER_TYPE}
     container_name: ${COMPOSE_PROJECT_NAME}_web_server

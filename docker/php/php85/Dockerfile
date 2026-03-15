@@ -1,22 +1,24 @@
-FROM phpdockerio/php:8.0-fpm
+FROM phpdockerio/php:8.5-fpm
+
+LABEL org.opencontainers.image.source="https://github.com/bitrixdock/bitrixdock"
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    php8.0-gd \
-    php8.0-imagick \
-    php8.0-intl \
-    php8.0-interbase \
-    php8.0-mbstring \
-    php8.0-mcrypt \
-    php8.0-memcache \
-    php8.0-memcached \
-    php8.0-redis \
-    php8.0-mysql \
-    php8.0-opcache \
-    php8.0-soap \
-    php8.0-xdebug \
-    php8.0-zip \
-    php8.0-dev \
+    php8.5-gd \
+    php8.5-imagick \
+    php8.5-intl \
+    php8.5-interbase \
+    php8.5-mbstring \
+    php8.5-mcrypt \
+    php8.5-memcache \
+    php8.5-memcached \
+    php8.5-redis \
+    php8.5-mysql \
+    php8.5-opcache \
+    php8.5-soap \
+    php8.5-xdebug \
+    php8.5-zip \
+    php8.5-dev \
     curl \
     git \
     libtool \
@@ -46,10 +48,10 @@ RUN git clone https://github.com/FelemixX/mailpit.git ./mailpit \
 COPY ./php.ini /etc/php/8.0/fpm/conf.d/90-php.ini
 COPY ./php.ini /etc/php/8.0/cli/conf.d/90-php.ini
 
-#remove comments if browscap needed
-#COPY ./your_browscap.ini /etc/php/8.0/fpm/conf.d/browscap.ini
-#COPY ./your_browscap.ini /etc/php/8.0/cli/conf.d/browscap.ini
+COPY ./php.ini /etc/php/8.5/fpm/conf.d/90-php.ini
+COPY ./php.ini /etc/php/8.5/cli/conf.d/90-php.ini
 
+RUN usermod -u 2000 ubuntu
 RUN usermod -u 1000 www-data
 
 RUN echo "www-data" > /etc/cron.deny && chmod 644 /etc/cron.deny
