@@ -17,6 +17,7 @@ RUN apt-get update \
     php8.3-xdebug \
     php8.3-zip \
     php8.3-dev \
+    php8.3-igbinary \
     curl \
     git \
     libtool \

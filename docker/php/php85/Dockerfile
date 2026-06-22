@@ -16,6 +16,7 @@ RUN apt-get update \
     php8.5-xdebug \
     php8.5-zip \
     php8.5-dev \
+    php8.5-igbinary \
     curl \
     git \
     libtool \
