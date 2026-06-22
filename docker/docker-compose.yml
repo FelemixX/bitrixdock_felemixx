@@ -32,15 +32,21 @@ services:
     environment:
       TZ: Europe/Moscow
     restart: unless-stopped
+    links:
+      - php
+    depends_on:
+      - php
     extra_hosts:
       - "push-server-sub:172.19.0.10"
       - "push-server-pub:172.19.0.11"
 
   db:
-    build: ./${DB_SERVER_TYPE}
-    platform: linux/amd64
+    build:
+      context: ./mysql
+      args:
+        MYSQL_VERSION: ${MYSQL_VERSION:-8.4}
     volumes:
-      - ./${DB_SERVER_TYPE}/init:/docker-entrypoint-initdb.d
+      - ./mysql/init:/docker-entrypoint-initdb.d
       - ./logs/db:/var/log/mysql
       - /etc/localtime:/etc/localtime/:ro
       - db:/var/lib/mysql
