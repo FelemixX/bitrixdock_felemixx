@@ -20,6 +20,9 @@ console-mysql-root: ## Log in to the MySQL console from "root"
 up: ## Up Docker-project
 	docker-compose up -d
 
+up-push: ## Up docker-project with bitrix push&pull
+	docker-compose up -d --profile push
+
 down: ## Down Docker-project
 	docker-compose down --remove-orphans
 

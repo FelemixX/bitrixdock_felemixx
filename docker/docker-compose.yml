@@ -16,6 +16,7 @@ services:
       - /tmp
     extra_hosts:
       - "bitrix.local:172.19.0.9"
+      - "host.docker.internal:host-gateway"
 
   web_server:
     build: ./${WEB_SERVER_TYPE}
@@ -142,6 +143,27 @@ services:
       - ./logs/xhprof:/var/log/xhprof
     ports:
       - ${XHPROF_VIEWER_PORT}:80
+
+  cron:
+    build: ./cron/${PHP_VERSION}
+    user: www-data # Обязательно запускаем от пользователя веб-сервера, чтобы не сломать права на файлы
+    volumes:
+      - ${SITE_PATH}:/var/www/bitrix
+      - ./logs/php:/var/log/php
+      - /etc/localtime:/etc/localtime/:ro
+    environment:
+      TZ: Europe/Moscow
+    networks:
+      - bitrixdock
+    restart: unless-stopped
+    depends_on:
+      - db
+      - memcached
+    extra_hosts:
+      - "bitrix.local:172.19.0.9"
+      - "host.docker.internal:host-gateway"
+    # Бесконечный цикл, который вызывает cron_events.php каждую минуту. 15 секунд сна в начале, чтобы не словить ошибку подключения к базе
+    command: /bin/bash -c "sleep 15; while true; do php -f ${CRON_EVENTS_PATH}; sleep ${CRON_EXEC_TIMEOUT_SEC}; done"
 
 volumes:
   db:
